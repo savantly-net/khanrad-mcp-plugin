@@ -17,7 +17,7 @@ This skill helps users configure their connection to the Khanrad Kanban API.
 
 ## Key Concepts
 
-- **`KHANRAD_URL`** — the URL of the deployed Khanrad instance (e.g., `https://khanrad.example.com`). Does not include `/api/mcp`.
+- **`KHANRAD_URL`** — the URL of the deployed Khanrad instance (e.g., `https://khanrad.dev`). Does not include `/api/mcp`.
 - **`KHANRAD_API_KEY`** — an API key generated from the Khanrad Settings UI. Prefixed with `knrd_`.
 
 The URL is typically set globally (one Khanrad instance), while the API key can be global or per-project (different orgs may use different keys).
@@ -31,7 +31,7 @@ Set the URL **globally** in `~/.claude/settings.json`:
 ```json
 {
   "env": {
-    "KHANRAD_URL": "https://your-khanrad-instance.example.com"
+    "KHANRAD_URL": "https://khanrad.dev"
   }
 }
 ```
@@ -53,7 +53,7 @@ If using the same key everywhere, set both globally:
 ```json
 {
   "env": {
-    "KHANRAD_URL": "https://your-khanrad-instance.example.com",
+    "KHANRAD_URL": "https://khanrad.dev",
     "KHANRAD_API_KEY": "knrd_your_api_key_here"
   }
 }

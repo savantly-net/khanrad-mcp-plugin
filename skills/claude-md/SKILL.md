@@ -36,8 +36,8 @@ This skill helps users generate and manage CLAUDE.md instructions that teach Cla
 
 | Resource | URI | When to Use |
 |----------|-----|-------------|
-| Board Summary | `kahnrad://board/{boardId}/summary` | Get overview of issue counts per state |
-| Agent Tasks | `kahnrad://agent/tasks` | Check all issues assigned to you |
+| Board Summary | `khanrad://board/{boardId}/summary` | Get overview of issue counts per state |
+| Agent Tasks | `khanrad://agent/tasks` | Check all issues assigned to you |
 
 ## Task Management Patterns
 

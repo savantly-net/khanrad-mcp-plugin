@@ -15,7 +15,7 @@ Help the user configure their connection to the Khanrad Kanban API.
    - If both are already configured, ask if they want to reconfigure or exit
 
 2. Ask for the Khanrad instance URL:
-   - e.g., `https://khanrad.example.com`
+   - e.g., `https://khanrad.dev`
    - Strip any trailing slash
    - Validate it looks like a URL (starts with `http://` or `https://`)
 
@@ -31,7 +31,7 @@ Help the user configure their connection to the Khanrad Kanban API.
      ```json
      {
        "env": {
-         "KHANRAD_URL": "https://your-khanrad-instance.example.com"
+         "KHANRAD_URL": "https://khanrad.dev"
        }
      }
      ```

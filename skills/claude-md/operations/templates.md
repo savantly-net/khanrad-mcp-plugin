@@ -7,7 +7,7 @@ Composable blocks for generating the `## Khanrad` section in CLAUDE.md. Each blo
 ### Session Start (always included)
 
 ```
-At session start, read the `kahnrad://agent/tasks` resource to check for assigned issues before doing any work.
+At session start, read the `khanrad://agent/tasks` resource to check for assigned issues before doing any work.
 When starting a coding session, check if there are open issues on the board that match the current task context.
 ```
 
@@ -30,7 +30,7 @@ When encountering a blocker or making a decision about an issue, call `add-comme
 ### Board Awareness (complex projects)
 
 ```
-Before starting work, read the `kahnrad://board/{boardId}/summary` resource to understand the current state of the board.
+Before starting work, read the `khanrad://board/{boardId}/summary` resource to understand the current state of the board.
 When unsure what to work on next, call `list-issues` filtered by priority to find the highest-priority unassigned work.
 ```
 
@@ -65,7 +65,7 @@ When creating issues for other agents, set appropriate priority and labels so th
 ```markdown
 ## Khanrad
 
-At session start, read the `kahnrad://agent/tasks` resource to check for assigned issues before doing any work.
+At session start, read the `khanrad://agent/tasks` resource to check for assigned issues before doing any work.
 When starting a coding session, check if there are open issues on the board that match the current task context.
 ```
 
@@ -74,7 +74,7 @@ When starting a coding session, check if there are open issues on the board that
 ```markdown
 ## Khanrad
 
-At session start, read the `kahnrad://agent/tasks` resource to check for assigned issues before doing any work.
+At session start, read the `khanrad://agent/tasks` resource to check for assigned issues before doing any work.
 When starting a coding session, check if there are open issues on the board that match the current task context.
 When beginning work on an issue, call `claim-issue` to assign it to yourself.
 When finishing work on an issue, call `move-issue` to advance it to the next state (e.g., "In Progress" → "In Review" or "Done").
@@ -88,8 +88,8 @@ When encountering a blocker or making a decision about an issue, call `add-comme
 ```markdown
 ## Khanrad
 
-At session start, read the `kahnrad://agent/tasks` resource to check for assigned issues before doing any work.
-Before starting work, read the `kahnrad://board/{boardId}/summary` resource to understand the current state of the board.
+At session start, read the `khanrad://agent/tasks` resource to check for assigned issues before doing any work.
+Before starting work, read the `khanrad://board/{boardId}/summary` resource to understand the current state of the board.
 When unsure what to work on next, call `list-issues` filtered by priority to find the highest-priority unassigned work.
 Always `claim-issue` before starting work to prevent other agents from duplicating effort.
 When finishing work on an issue, call `move-issue` to advance it to the next state (e.g., "In Progress" → "In Review" or "Done").

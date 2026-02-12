@@ -1,6 +1,6 @@
 # Khanrad MCP Plugin for Claude Code
 
-Kanban task board for AI coding agents — create, claim, and manage issues via the [Khanrad](https://github.com/savantly-net/khanrad) API.
+Kanban task board for AI coding agents — create, claim, and manage issues via the [Khanrad](https://khanrad.dev) API.
 
 ## Installation
 
@@ -28,7 +28,7 @@ Set your Khanrad instance URL **globally** in `~/.claude/settings.json`:
 ```json
 {
   "env": {
-    "KHANRAD_URL": "https://your-khanrad-instance.example.com"
+    "KHANRAD_URL": "https://khanrad.dev"
   }
 }
 ```
@@ -52,7 +52,7 @@ If you use the same API key across all projects, set it globally in `~/.claude/s
 ```json
 {
   "env": {
-    "KHANRAD_URL": "https://your-khanrad-instance.example.com",
+    "KHANRAD_URL": "https://khanrad.dev",
     "KHANRAD_API_KEY": "knrd_your_api_key_here"
   }
 }
@@ -83,8 +83,8 @@ Add `.claude/settings.json` to your `.gitignore` to avoid committing secrets. Pr
 
 | Resource | URI | Description |
 |----------|-----|-------------|
-| Board Summary | `kahnrad://board/{boardId}/summary` | Issue counts per state for a board |
-| Agent Tasks | `kahnrad://agent/tasks` | All issues assigned to the current agent |
+| Board Summary | `khanrad://board/{boardId}/summary` | Issue counts per state for a board |
+| Agent Tasks | `khanrad://agent/tasks` | All issues assigned to the current agent |
 
 ## Development
 
