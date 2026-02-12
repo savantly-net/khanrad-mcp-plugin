@@ -4,9 +4,19 @@ Kanban task board for AI coding agents — create, claim, and manage issues via 
 
 ## Installation
 
+First, add the Khanrad marketplace:
+
 ```bash
-claude plugin install savantly-net@khanrad
+claude plugin marketplace add savantly-net/khanrad-mcp-plugin
 ```
+
+Then install the plugin:
+
+```bash
+claude plugin install khanrad@khanrad
+```
+
+Restart Claude Code to activate the plugin.
 
 ## Features
 
