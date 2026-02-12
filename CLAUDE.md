@@ -1,32 +1,32 @@
 # CLAUDE.md
 
-## Project
-
-Khanrad MCP Plugin — a Claude Code plugin that connects to a deployed Khanrad kanban instance via HTTP transport. This is a configuration-only plugin (no runtime code) containing MCP server config, commands, and skills.
-
 ## Best Practices
 
-Follow these principles when modifying or extending this plugin:
+Follow SOLID principles in all code:
+- **Single Responsibility**: Each module, class, or function should have one reason to change.
+- **Open/Closed**: Design for extension without modifying existing code.
+- **Liskov Substitution**: Subtypes must be substitutable for their base types.
+- **Interface Segregation**: Prefer small, focused interfaces over large general-purpose ones.
+- **Dependency Inversion**: Depend on abstractions, not concretions.
 
-### 12-Factor App Principles
+Follow 12-Factor App principles where applicable:
+- Store config in the environment, never in code.
+- Treat backing services as attached resources.
+- Keep dev/prod parity as close as possible.
+- Strictly separate build, release, and run stages.
+- Export services via port binding; keep processes stateless.
+- Treat logs as event streams, not files.
 
-- **Config in the environment** — all instance-specific values (`KHANRAD_URL`, `KHANRAD_API_KEY`) are environment variables, never hardcoded. The `.mcp.json` references `${VAR}` placeholders resolved at runtime.
-- **Dev/prod parity** — the plugin connects to any Khanrad instance via URL. No separate "dev mode" or mock endpoints. Test against a real instance.
-- **Backing services as attached resources** — the Khanrad API is treated as an attached resource identified only by URL and credentials. Swapping instances requires only changing env vars.
-- **Explicitly declare dependencies** — all MCP server dependencies are declared in `.mcp.json`. No implicit assumptions about what's available.
-- **Keep config strictly separated from code** — commands and skills contain logic and templates; connection details live entirely in env vars and settings files.
+General engineering standards:
+- Write clean, readable code that favors clarity over cleverness.
+- Keep functions small and focused on a single task.
+- Prefer composition over inheritance.
+- Handle errors explicitly at system boundaries; don't swallow exceptions.
+- Avoid premature optimization -- measure first, then optimize.
+- Keep dependencies minimal and up to date.
 
-### SOLID Principles
+## Headkey Memory
 
-- **Single Responsibility** — each file has one job: `.mcp.json` handles connection, `commands/setup.md` handles configuration, `commands/claude-md.md` handles generation, skills define trigger conditions, operations hold reusable templates.
-- **Open/Closed** — add new commands by creating new files in `commands/`, new skills in `skills/`. Existing files don't need modification to extend functionality.
-- **Interface Segregation** — skills are split by concern (setup vs claude-md). Each command declares only the tools it needs in its `allowed-tools` frontmatter.
-- **Dependency Inversion** — the plugin depends on the MCP protocol abstraction, not on Khanrad internals. Any server implementing the same MCP tools would work.
-
-### General
-
-- Keep command instructions declarative — describe *what* to do, not *how* Claude should think about it.
-- Templates in `skills/claude-md/operations/templates.md` use behavioral triggers ("When X, do Y"), not documentation. Don't add tool parameter docs there.
-- Plugin files are plain markdown and JSON — no build step, no transpilation, no dependencies.
-- Test changes with `claude --plugin-dir .` before committing.
-- Never hardcode URLs, API keys, or instance-specific values in any file.
+At session start, call `ask` with "What do I know about khanrad-mcp-plugin?" to load prior context before doing any work.
+When you learn something significant about khanrad-mcp-plugin (skill design, template patterns, plugin configuration), call `remember` with source: "khanrad-mcp-plugin" and relevant tags.
+When you make a decision or choose an approach, call `believe` with the decision, confidence 0.7-0.9, and subject: "khanrad-mcp-plugin".
