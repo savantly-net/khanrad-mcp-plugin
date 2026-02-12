@@ -1,0 +1,22 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "khanrad",
+  "description": "Kanban task board for AI coding agents \u2014 create, claim, and manage issues via MCP",
+  "owner": {
+    "name": "Savantly",
+    "email": "support@savantly.net"
+  },
+  "plugins": [
+    {
+      "name": "khanrad",
+      "description": "Kanban task board for AI coding agents \u2014 create, claim, and manage issues via MCP",
+      "version": "1.0.0",
+      "author": {
+        "name": "Savantly"
+      },
+      "source": "./",
+      "category": "productivity",
+      "homepage": "https://github.com/savantly-net/khanrad-mcp-plugin"
+    }
+  ]
+}

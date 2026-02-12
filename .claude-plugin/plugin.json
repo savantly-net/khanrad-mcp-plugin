@@ -1,0 +1,20 @@
+{
+  "name": "khanrad",
+  "version": "1.0.0",
+  "description": "Kanban task board for AI coding agents \u2014 create, claim, and manage issues via MCP",
+  "author": {
+    "name": "Savantly",
+    "url": "https://github.com/savantly-net"
+  },
+  "repository": "https://github.com/savantly-net/khanrad-mcp-plugin",
+  "license": "MIT",
+  "keywords": [
+    "kanban",
+    "tasks",
+    "issues",
+    "agents",
+    "mcp",
+    "project-management"
+  ],
+  "mcpServers": "./.mcp.json"
+}

@@ -1,0 +1,9 @@
+{
+  "khanrad": {
+    "type": "http",
+    "url": "${KHANRAD_URL}/api/mcp",
+    "headers": {
+      "Authorization": "Bearer ${KHANRAD_API_KEY}"
+    }
+  }
+}
