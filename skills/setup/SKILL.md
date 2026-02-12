@@ -14,11 +14,19 @@ This skill helps users configure their connection to the Khanrad Kanban API.
 - User needs help with API key or URL configuration
 - User is troubleshooting connection issues
 - User wants to configure different Khanrad instances per project
+- User wants to create or update `.khanrad.json`
 
 ## Key Concepts
 
 - **`KHANRAD_URL`** — the URL of the deployed Khanrad instance (e.g., `https://khanrad.dev`). Does not include `/api/mcp`.
 - **`KHANRAD_API_KEY`** — an API key generated from the Khanrad Settings UI. Prefixed with `knrd_`.
+- **`.khanrad.json`** — workspace config file mapping this project to a Khanrad project and board by slug. Safe to commit. Example:
+  ```json
+  {
+    "project": "my-project",
+    "defaultBoard": "development"
+  }
+  ```
 
 The URL is typically set globally (one Khanrad instance), while the API key can be global or per-project (different orgs may use different keys).
 
@@ -59,13 +67,24 @@ If using the same key everywhere, set both globally:
 }
 ```
 
+### Workspace Context (`.khanrad.json`)
+
+A `.khanrad.json` file in the project root maps the workspace to a Khanrad project and board by slug:
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `project` | string | Yes | Slug of the Khanrad project |
+| `defaultBoard` | string | No | Slug of the default board |
+
+This file is safe to commit — it contains only slugs, no secrets. At session start, Claude reads this file and resolves slugs to IDs via `list-projects` and `list-boards`. The `/khanrad:setup` command offers to create this file after environment variable configuration.
+
 ### Git Safety
 
 Make sure `.claude/settings.json` is in `.gitignore` to avoid committing secrets. Project-level settings override global settings.
 
 ## Setup Command
 
-Users can run `/khanrad:setup` for a guided walkthrough that handles URL input, API key configuration, scope selection, and `.gitignore` checks.
+Users can run `/khanrad:setup` for a guided walkthrough that handles URL input, API key configuration, scope selection, `.gitignore` checks, and `.khanrad.json` creation.
 
 ## Verification
 

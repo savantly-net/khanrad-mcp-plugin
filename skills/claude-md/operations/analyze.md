@@ -2,12 +2,22 @@
 
 How to analyze a project for CLAUDE.md generation.
 
+## Workspace Config Detection
+
+Before resolving the project name, check for a `.khanrad.json` file in the project root. If it exists, read it and extract:
+
+- `project` (required) — slug of the Khanrad project
+- `defaultBoard` (optional) — slug of the default board
+
+These slugs are resolved to IDs at runtime via `list-projects` and `list-boards`, so the generated CLAUDE.md never needs hardcoded IDs when this file is present.
+
 ## Project Name Resolution
 
 Resolve in priority order — stop at the first match:
 
 | Source | Field | Example |
 |--------|-------|---------|
+| `.khanrad.json` | `project` | `"my-app"` |
 | `package.json` | `name` | `"my-app"` |
 | `Cargo.toml` | `[package] name` | `name = "my-app"` |
 | `pyproject.toml` | `[project] name` | `name = "my-app"` |

@@ -1,6 +1,6 @@
 ---
 description: Configure Khanrad connection (set instance URL and API key for this project or globally)
-allowed-tools: [Bash, Read, Write, Edit, AskUserQuestion]
+allowed-tools: [Bash, Read, Write, Edit, AskUserQuestion, mcp__khanrad__list-projects, mcp__khanrad__list-boards]
 ---
 
 # Khanrad Setup
@@ -54,9 +54,22 @@ Help the user configure their connection to the Khanrad Kanban API.
    - Check if `.gitignore` exists and whether it already includes `.claude/settings.json`
    - If not, offer to add it to prevent committing secrets
 
-6. Verify the configuration works by restarting Claude Code or checking that the Khanrad MCP tools are available.
+6. Offer to create or update `.khanrad.json` in the project root:
+   - If `.khanrad.json` already exists, show its contents and ask if the user wants to update it
+   - Call `list-projects` and present the list — let the user pick a project
+   - Call `list-boards` for the selected project and let the user pick a default board (or skip)
+   - Write `.khanrad.json` with the selected slugs:
+     ```json
+     {
+       "project": "selected-project-slug",
+       "defaultBoard": "selected-board-slug"
+     }
+     ```
+   - Inform the user this file is safe to commit — it contains only slugs, no secrets
 
-7. Report success and explain that Khanrad tools are now available in this session.
+7. Verify the configuration works by restarting Claude Code or checking that the Khanrad MCP tools are available.
+
+8. Report success and explain that Khanrad tools are now available in this session.
 
 ## Important
 

@@ -4,6 +4,14 @@ Composable blocks for generating the `## Khanrad` section in CLAUDE.md. Each blo
 
 ## Template Blocks
 
+### Workspace Context (prepend when `.khanrad.json` exists)
+
+```
+At session start, if `.khanrad.json` exists in the project root, read it to get the project
+slug and default board slug. Resolve slugs to IDs via `list-projects` and `list-boards`.
+Use these IDs for all subsequent Khanrad operations in this session.
+```
+
 ### Session Start (always included)
 
 ```
@@ -48,7 +56,7 @@ When creating issues for other agents, set appropriate priority and labels so th
 2. **Keep total lines between 2-12.** More than that and instructions compete with each other for attention.
 3. **Each line must be a behavioral trigger.** Format: "When {condition}, call `{tool}` with {key context}."
 4. **Don't duplicate what MCP provides.** Tool schemas, parameter types, and defaults come from MCP — only specify *when* to use tools and which params matter.
-5. **Include board/project IDs when known.** If a specific board was detected during setup, hardcode the IDs so Claude doesn't need to discover them each session.
+5. **Prefer `.khanrad.json` over hardcoded IDs.** If `.khanrad.json` exists, use the Workspace Context block instead of embedding IDs. If no config file exists and a specific board was detected during setup, hardcode the IDs so Claude doesn't need to discover them each session.
 
 ## Anti-Patterns
 
@@ -59,6 +67,8 @@ When creating issues for other agents, set appropriate priority and labels so th
 - **Don't repeat MCP defaults.** If a tool parameter has a sensible default, don't mention it.
 
 ## Complete Tier Examples
+
+> **Note:** When `.khanrad.json` exists in the project root, prepend the Workspace Context block to any tier. This replaces hardcoded project/board IDs with slug-based resolution.
 
 ### Minimal (simple projects)
 
@@ -74,6 +84,23 @@ When starting a coding session, check if there are open issues on the board that
 ```markdown
 ## Khanrad
 
+At session start, read the `khanrad://agent/tasks` resource to check for assigned issues before doing any work.
+When starting a coding session, check if there are open issues on the board that match the current task context.
+When beginning work on an issue, call `claim-issue` to assign it to yourself.
+When finishing work on an issue, call `move-issue` to advance it to the next state (e.g., "In Progress" → "In Review" or "Done").
+When creating a task that needs tracking, call `create-issue` with a clear title, description, and appropriate priority.
+When completing a significant step on an issue, call `add-comment` with a brief summary of what was done.
+When encountering a blocker or making a decision about an issue, call `add-comment` to document it.
+```
+
+### Standard with `.khanrad.json` (medium projects, workspace config)
+
+```markdown
+## Khanrad
+
+At session start, if `.khanrad.json` exists in the project root, read it to get the project
+slug and default board slug. Resolve slugs to IDs via `list-projects` and `list-boards`.
+Use these IDs for all subsequent Khanrad operations in this session.
 At session start, read the `khanrad://agent/tasks` resource to check for assigned issues before doing any work.
 When starting a coding session, check if there are open issues on the board that match the current task context.
 When beginning work on an issue, call `claim-issue` to assign it to yourself.

@@ -25,6 +25,7 @@ Restart Claude Code to activate the plugin.
 - **Agent workflows** — claim and unclaim issues for agent-driven task execution
 - **Comments** — add comments to issues for progress tracking
 - **Board resources** — get board summaries and agent task lists via MCP resources
+- **Workspace context** — commit a `.khanrad.json` file to map your repo to a Khanrad project and board by slug
 - **CLAUDE.md generation** — run `/khanrad:claude-md` to auto-generate task management instructions tailored to your project
 
 ## Configuration
@@ -71,6 +72,24 @@ If you use the same API key across all projects, set it globally in `~/.claude/s
 ### Git Safety
 
 Add `.claude/settings.json` to your `.gitignore` to avoid committing secrets. Project-level settings override global settings.
+
+## Workspace Context (`.khanrad.json`)
+
+Add a `.khanrad.json` file to your project root to map it to a Khanrad project and board by slug. This file is safe to commit — it contains no secrets.
+
+```json
+{
+  "project": "my-project",
+  "defaultBoard": "development"
+}
+```
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `project` | string | Yes | Slug of the Khanrad project |
+| `defaultBoard` | string | No | Slug of the default board |
+
+When this file is present, Claude resolves slugs to IDs at session start via `list-projects` and `list-boards` — no hardcoded IDs needed in CLAUDE.md. Run `/khanrad:setup` to create this file interactively.
 
 ## Tools
 

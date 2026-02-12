@@ -11,6 +11,10 @@ Analyze the current project and generate a `## Khanrad` section for CLAUDE.md th
 
 Detect the project context:
 
+0. **Workspace config** — check for `.khanrad.json` in the project root:
+   - If it exists, read it and extract the `project` slug and optional `defaultBoard` slug
+   - These slugs will be used in Phase 2 to resolve IDs instead of name matching
+
 1. **Project name** — resolve in priority order:
    - `package.json` → `name`
    - `Cargo.toml` → `[package] name`
@@ -37,8 +41,14 @@ Report findings to the user: project name, detected stack, complexity tier.
 
 Call these tools to see if a Khanrad board already exists for this project:
 
-1. `list-projects` — check for an existing project matching the detected name
-2. If found, `list-boards` — check for an active board
+1. **If `.khanrad.json` was found** — resolve slugs to IDs:
+   - `list-projects` — find the project whose slug matches the `project` field
+   - If found, `list-boards` — find the board whose slug matches `defaultBoard` (if provided), otherwise note all boards
+   - If the slug doesn't match any project or board, warn the user and fall back to name matching
+
+2. **Otherwise** — fall back to name matching:
+   - `list-projects` — check for an existing project matching the detected name
+   - If found, `list-boards` — check for an active board
 
 If a board exists, note the project ID and board ID for inclusion in the generated instructions. If no board exists, the generated instructions will include setup steps.
 
@@ -74,7 +84,9 @@ Read the skill template file at `skills/claude-md/operations/templates.md` relat
 
 Compose the `## Khanrad` section using the selected pattern templates.
 
-If a Khanrad board was found in Phase 2, include the project and board IDs in the generated instructions so Claude can immediately start working with the board.
+If `.khanrad.json` exists, use the Workspace Context template block instead of hardcoding project/board IDs. This makes the generated instructions portable across environments.
+
+If no `.khanrad.json` exists but a Khanrad board was found in Phase 2, include the project and board IDs in the generated instructions so Claude can immediately start working with the board.
 
 Present the exact content in a fenced code block and explain:
 - Where it will be inserted (new CLAUDE.md, or appended/updated in existing one)

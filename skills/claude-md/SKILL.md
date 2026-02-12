@@ -14,6 +14,7 @@ This skill helps users generate and manage CLAUDE.md instructions that teach Cla
 - User asks how to make Claude use Khanrad for task tracking
 - User mentions configuring kanban-driven development for a project
 - User wants to customize which Khanrad tools Claude uses automatically
+- User has a `.khanrad.json` file and wants CLAUDE.md to reference it
 
 ## Quick Tool Reference
 
@@ -38,6 +39,16 @@ This skill helps users generate and manage CLAUDE.md instructions that teach Cla
 |----------|-----|-------------|
 | Board Summary | `khanrad://board/{boardId}/summary` | Get overview of issue counts per state |
 | Agent Tasks | `khanrad://agent/tasks` | Check all issues assigned to you |
+
+## Workspace Context Resolution
+
+When `.khanrad.json` exists in the project root, the generated CLAUDE.md uses slug-based resolution instead of hardcoded IDs:
+
+1. At session start, read `.khanrad.json` to get the `project` slug and optional `defaultBoard` slug
+2. Resolve slugs to IDs via `list-projects` and `list-boards`
+3. Use the resolved IDs for all subsequent Khanrad operations
+
+This makes the CLAUDE.md portable — it works for any contributor without knowing specific IDs.
 
 ## Task Management Patterns
 
