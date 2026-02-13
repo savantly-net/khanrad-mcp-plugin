@@ -1,9 +1,9 @@
 ---
-description: Brainstorm a greenfield project — decompose an application idea into domains, generate stories with parallel subagents, and populate a Khanrad board
+description: Plan a greenfield project — decompose an application idea into domains, generate stories with parallel subagents, and populate a Khanrad board
 allowed-tools: [AskUserQuestion, Task, Read, Glob, mcp__khanrad__list-projects, mcp__khanrad__create-project, mcp__khanrad__list-boards, mcp__khanrad__create-board, mcp__khanrad__create-issue, mcp__khanrad__update-issue, mcp__khanrad__move-issue]
 ---
 
-# Khanrad Brainstorm
+# Khanrad Plan Project
 
 Guide the user from an application idea to a fully populated Khanrad board of tagged, prioritized issues.
 
@@ -219,7 +219,7 @@ If creating, call `create-project` with the user's chosen name and slug.
 
 ### 5.2 — Create the Board
 
-Always create a **new board** for a brainstorm session. Ask the user for a board name, suggesting a default like `"{project_name} Backlog"` or `"{project_name} v1"`.
+Always create a **new board** for a planning session. Ask the user for a board name, suggesting a default like `"{project_name} Backlog"` or `"{project_name} v1"`.
 
 Call `create-board` with the project ID and chosen name. Note the board ID and the state IDs returned (the board comes with default states: Ice Box, Backlog, Todo, In Progress, Blocked, In Review, Done).
 
@@ -251,7 +251,7 @@ After all issues are created:
 
 Present the final summary to the user:
 
-> **Brainstorm complete!**
+> **Project planning complete!**
 >
 > **Project:** {project_name}
 > **Board:** {board_name}

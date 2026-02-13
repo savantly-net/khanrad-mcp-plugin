@@ -13,7 +13,7 @@ This skill turns the agent into an autonomous executor that works through Khanra
 - User wants the agent to work through issues on a Khanrad board
 - User asks to "start working", "execute the backlog", or "implement the stories"
 - User wants autonomous or supervised issue execution
-- User has a board full of issues (from `/khanrad:brainstorm` or `/khanrad:plan-feature`) and wants them implemented
+- User has a board full of issues (from `/khanrad:plan-project` or `/khanrad:plan-feature`) and wants them implemented
 
 ## Key Concepts
 
@@ -34,7 +34,7 @@ This skill turns the agent into an autonomous executor that works through Khanra
 ## Relationship to Other Commands
 
 ```
-/khanrad:brainstorm    → Board of issues (greenfield)
+/khanrad:plan-project  → Board of issues (greenfield)
 /khanrad:plan-feature  → Board of issues (brownfield)
                              ↓
 /khanrad:work          → Issues implemented and committed

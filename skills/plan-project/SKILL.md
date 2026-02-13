@@ -1,10 +1,10 @@
 ---
-name: brainstorm
-description: This skill should be used when the user asks to "brainstorm a project", "plan a new app", "decompose a project into stories", "greenfield project planning", "break down an application idea", or wants to go from an application description to a set of Khanrad issues and stories.
+name: plan-project
+description: This skill should be used when the user asks to "plan a project", "brainstorm a project", "plan a new app", "decompose a project into stories", "greenfield project planning", "break down an application idea", or wants to go from an application description to a set of Khanrad issues and stories.
 version: 1.0.0
 ---
 
-# Khanrad Brainstorm Skill
+# Khanrad Plan Project Skill
 
 This skill takes a greenfield application description, guides the user through iterative refinement, decomposes the application into domains, generates stories and epics using parallel subagents, and populates a Khanrad board with tagged, prioritized issues.
 
