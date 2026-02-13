@@ -18,6 +18,14 @@ claude plugin install khanrad@khanrad
 
 Restart Claude Code to activate the plugin.
 
+## Updating
+
+To update to the latest version:
+
+```bash
+claude plugin marketplace update khanrad
+```
+
 ## Features
 
 - **Project management** — create and list projects and boards
