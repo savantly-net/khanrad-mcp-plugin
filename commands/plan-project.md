@@ -1,6 +1,6 @@
 ---
 description: Plan a greenfield project — decompose an application idea into domains, generate stories with parallel subagents, and populate a Khanrad board
-allowed-tools: [AskUserQuestion, Task, Read, Glob, mcp__khanrad__list-projects, mcp__khanrad__create-project, mcp__khanrad__list-boards, mcp__khanrad__create-board, mcp__khanrad__create-issue, mcp__khanrad__update-issue, mcp__khanrad__move-issue]
+allowed-tools: [AskUserQuestion, Task, Read, Glob, mcp__khanrad__list-projects, mcp__khanrad__create-project, mcp__khanrad__list-boards, mcp__khanrad__create-board, mcp__khanrad__create-issue, mcp__khanrad__update-issue, mcp__khanrad__move-issue, mcp__khanrad__block-issue]
 ---
 
 # Khanrad Plan Project
@@ -240,14 +240,38 @@ Create epics first, then stories. For stories, include the parent epic title in 
 
 **Create issues in batches** — call `create-issue` for multiple issues in parallel where possible. Do not create them one at a time.
 
-### 5.4 — Organize by State
+### 5.4 — Wire Blocking Relationships
+
+Now wire up dependency relationships using the data from Phase 3. For each story that listed dependencies on other domains or stories:
+
+1. Match the dependency reference (e.g., "Requires domain:auth for user sessions") to the created issue(s) by domain label and title
+2. Call `block-issue` with the prerequisite issue as `issueId` and the dependent issue as `blockedIssueId`
+
+Common blocking patterns to wire:
+- **Cross-domain dependencies** — a story in one domain that depends on a story in another domain (e.g., orders depend on auth)
+- **Epic-to-story ordering** — if an epic's setup story must complete before other stories in that epic can start
+- **Infrastructure prerequisites** — infrastructure or setup stories that block feature stories across domains
+
+Present the results:
+
+> **Dependencies wired:** {n} blocking relationships across {m} issues
+>
+> Key dependency chains:
+> - {prerequisite_title} blocks {dependent_title}
+> - {prerequisite_title} blocks {dependent_title_1}, {dependent_title_2}
+
+If any dependency references could not be resolved to a created issue, note them:
+
+> **Unresolved dependencies:** {list} — these were mentioned in issue descriptions but could not be matched to a created issue. They remain documented in the issue text.
+
+### 5.5 — Organize by State
 
 After all issues are created:
 - Move `phase:future` issues to the **Ice Box** state via `move-issue`
 - Leave `phase:mvp` issues in **Backlog** (the default)
 - Leave `phase:v2` issues in **Backlog**
 
-### 5.5 — Summary
+### 5.6 — Summary
 
 Present the final summary to the user:
 

@@ -1,6 +1,6 @@
 ---
 description: Work through Khanrad issues autonomously — claim, implement, verify, commit, and mark done in a loop until the board is complete
-allowed-tools: [AskUserQuestion, Read, Write, Edit, Glob, Grep, Bash, mcp__khanrad__list-projects, mcp__khanrad__list-boards, mcp__khanrad__list-issues, mcp__khanrad__get-issue, mcp__khanrad__claim-issue, mcp__khanrad__unclaim-issue, mcp__khanrad__move-issue, mcp__khanrad__update-issue, mcp__khanrad__add-comment]
+allowed-tools: [AskUserQuestion, Read, Write, Edit, Glob, Grep, Bash, mcp__khanrad__list-projects, mcp__khanrad__list-boards, mcp__khanrad__list-issues, mcp__khanrad__get-issue, mcp__khanrad__create-issue, mcp__khanrad__claim-issue, mcp__khanrad__unclaim-issue, mcp__khanrad__move-issue, mcp__khanrad__update-issue, mcp__khanrad__add-comment, mcp__khanrad__block-issue, mcp__khanrad__unblock-issue]
 ---
 
 # Khanrad Work
@@ -43,7 +43,7 @@ Call `list-issues` on the board. Count issues by state and present a summary:
 > | Done | {n} |
 > | **Total** | **{n}** |
 
-Show the workable issues (Todo + Backlog, not blocked) sorted by priority.
+Show the workable issues (Todo + Backlog, not blocked by other issues) sorted by priority. Use the blocking relationships from the Khanrad API — an issue is workable only if it has no unresolved `blockedBy` entries (i.e., all blocking issues are in Done state).
 
 ### 0.3 — Ask Autonomy Level
 
@@ -123,11 +123,11 @@ Repeat the following for each issue until a stopping condition is met.
 
 ### Step 1 — Select Next Issue
 
-Refresh the board state by calling `list-issues`. Apply the scope filter. Select the next issue using this priority:
+Refresh the board state by calling `list-issues`. Apply the scope filter. Exclude any issue that has unresolved `blockedBy` entries (blocking issues not yet in Done state). Select the next issue from the remaining workable set using this priority:
 
 1. **State order**: Todo > Backlog (never pick from Ice Box unless explicitly in scope)
 2. **Priority order**: URGENT > HIGH > MEDIUM > LOW
-3. **Unblocking value**: prefer issues that block the most other issues (clears the path for subsequent work)
+3. **Unblocking value**: prefer issues that block the most other issues (use the `blocks` field from the API to count downstream dependents — clearing these first unblocks the most subsequent work)
 4. **Stable tiebreaker**: lowest issue ID first (respects creation order from planning commands)
 
 If no workable issues remain, go to the Completion section.
@@ -142,11 +142,11 @@ If no workable issues remain, go to the Completion section.
 ### Step 3 — Understand the Issue
 
 - Call `get-issue` to read the full issue details
+- Check the issue's `blockedBy` list from the API. If any blocking issues are not yet Done, this issue should not have been selected — skip it and return to Step 1. This is a safety check in case the board state changed between selection and claiming.
 - Parse the description for:
   - **Acceptance criteria** — the definition of done for this issue
   - **Referenced files** — specific files to create or modify
   - **Conventions to follow** — patterns or examples to match
-  - **Dependencies** — other issues this depends on (verify they are Done)
   - **Parent epic** — context about the broader goal
 - Parse the labels for context:
   - `type:*` — what kind of work (story, refactor, migration, test, spike, infra)
@@ -303,6 +303,8 @@ If using branch-per-issue strategy:
   ```
 - Revert any uncommitted changes for this issue: `git checkout -- .`
 - Call `move-issue` to move to **Blocked**
+- If the blocker is another issue on the board (e.g., a missing prerequisite that should have been completed first), call `block-issue` to formally record the blocking relationship so this issue won't be picked up again until the blocker is resolved
+- If the blocker requires new work not yet tracked, create a new issue for the prerequisite via `create-issue`, then call `block-issue` to link them
 - Call `unclaim-issue` so a human or another agent can pick it up
 - Report: `[{current}/{total}] Blocked: "{issue_title}" — {reason}. Moving to next issue.`
 - Increment the consecutive failure counter
@@ -315,7 +317,7 @@ Before looping back to Step 1, check:
    > Three consecutive issues have been blocked. This might indicate a systemic problem (broken build, missing dependency, bad test environment). Want to investigate before continuing?
    - Reset the counter if the user says to continue.
 
-2. **No more workable issues** — if the next `list-issues` call shows no unblocked issues in scope, go to Completion.
+2. **No more workable issues** — if the next `list-issues` call shows no issues in scope that are both in a workable state (Todo/Backlog) and free of unresolved `blockedBy` entries, go to Completion.
 
 3. **All issues Done** — go to Completion.
 

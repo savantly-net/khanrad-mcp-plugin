@@ -1,6 +1,6 @@
 ---
 description: Plan a feature for an existing application — explore the codebase, perform impact analysis, generate stories with parallel subagents, and populate a Khanrad board
-allowed-tools: [AskUserQuestion, Task, Read, Glob, Grep, mcp__khanrad__list-projects, mcp__khanrad__list-boards, mcp__khanrad__create-board, mcp__khanrad__list-issues, mcp__khanrad__get-issue, mcp__khanrad__create-issue, mcp__khanrad__update-issue, mcp__khanrad__move-issue]
+allowed-tools: [AskUserQuestion, Task, Read, Glob, Grep, mcp__khanrad__list-projects, mcp__khanrad__list-boards, mcp__khanrad__create-board, mcp__khanrad__list-issues, mcp__khanrad__get-issue, mcp__khanrad__create-issue, mcp__khanrad__update-issue, mcp__khanrad__move-issue, mcp__khanrad__block-issue]
 ---
 
 # Khanrad Plan Feature
@@ -381,14 +381,38 @@ For each approved story, call `create-issue` with:
 
 **Create issues in batches** — call `create-issue` for multiple independent issues in parallel.
 
-### 6.3 — Organize by State
+### 6.3 — Wire Blocking Relationships
+
+Wire up the dependency graph from Phase 5.3 using the created issue IDs. For each story that listed dependencies on other stories or impact areas:
+
+1. Match the dependency reference to the created issue by title or impact area
+2. Call `block-issue` with the prerequisite issue as `issueId` and the dependent issue as `blockedIssueId`
+
+Wire dependencies in this order (matching the implementation sequence from Phase 3.4):
+- **Prerequisite refactoring** stories block the core stories that depend on them
+- **Migration** stories block stories that need the new schema
+- **Core logic** stories block API stories that expose them
+- **API** stories block UI stories that consume them
+- **Cross-cutting** stories block any stories that depend on them
+
+Present the results:
+
+> **Dependencies wired:** {n} blocking relationships across {m} issues
+>
+> Longest chain: {story_1} → {story_2} → ... → {story_n} ({n} deep)
+
+If any dependency references could not be resolved, note them:
+
+> **Unresolved dependencies:** {list} — documented in issue text only.
+
+### 6.4 — Organize by State
 
 After all issues are created:
 - Move **prerequisite** stories (refactoring, migrations) to **Todo** state — these should be started first
 - Leave **core implementation** stories in **Backlog**
 - Move **deferred** or low-priority stories to **Ice Box**
 
-### 6.4 — Summary
+### 6.5 — Summary
 
 Present the final summary:
 
