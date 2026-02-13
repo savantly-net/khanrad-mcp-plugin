@@ -36,5 +36,3 @@ When you make a decision or choose an approach, call `believe` with the decision
 At session start, if `.khanrad.json` exists in the project root, read it to get the project
 slug and default board slug. Resolve slugs to IDs via `list-projects` and `list-boards`.
 Use these IDs for all subsequent Khanrad operations in this session.
-At session start, read the `khanrad://agent/tasks` resource to check for assigned issues before doing any work.
-When starting a coding session, check if there are open issues on the board that match the current task context.

@@ -5,7 +5,7 @@ allowed-tools: [Read, Write, Edit, Glob, Grep, AskUserQuestion, mcp__khanrad__li
 
 # Generate Khanrad Task Management Instructions for CLAUDE.md
 
-Analyze the current project and generate a `## Khanrad` section for CLAUDE.md that teaches Claude when and how to use Khanrad tools for task management. The user may provide a focus area in `$ARGUMENTS` (e.g., "minimal", "full", "agent-workflow").
+Analyze the current project and generate a `## Khanrad` section for CLAUDE.md. The Khanrad MCP server already provides standard workflow instructions (claim, move, comment, unclaim, check assigned tasks). **CLAUDE.md only needs project-specific context** that the MCP server cannot provide. The user may provide a focus area in `$ARGUMENTS`.
 
 ## Phase 1: Analyze Project
 
@@ -23,19 +23,11 @@ Detect the project context:
    - Git remote → repo name
    - Fall back to current directory name
 
-2. **Stack and complexity** — scan for signals:
-   - Count top-level directories, source files, config files
-   - Check for monorepo indicators (workspaces, lerna, nx, turborepo)
-   - Detect frameworks and languages from manifests and file extensions
-   - **Simple**: single-purpose project, one language
-   - **Medium**: multiple modules, 1-2 languages
-   - **Complex**: monorepo, microservices, 3+ languages
-
-3. **Existing CLAUDE.md** — check if one exists at project root:
-   - If it has a `## Khanrad` section already, note this for Phase 4 (update instead of append)
+2. **Existing CLAUDE.md** — check if one exists at project root:
+   - If it has a `## Khanrad` section already, note this for Phase 3 (update instead of append)
    - Read the full file to understand existing instructions and avoid conflicts
 
-Report findings to the user: project name, detected stack, complexity tier.
+Report findings to the user: project name, whether `.khanrad.json` exists.
 
 ## Phase 2: Check Existing Khanrad Board
 
@@ -52,54 +44,34 @@ Call these tools to see if a Khanrad board already exists for this project:
    - If matched, `list-boards` — use the first board as the default
    - If no slug match, proceed without board context
 
-If a board is found (via `.khanrad.json` or slug discovery), note the project ID and board ID. If slug discovery succeeded, **offer to create `.khanrad.json`** to persist the mapping — this avoids repeated discovery in future sessions. If no board exists, the generated instructions will include setup steps.
+If slug discovery succeeded, **offer to create `.khanrad.json`** to persist the mapping.
 
-## Phase 3: Select Patterns
+## Phase 3: Compose Snippet
 
-Based on complexity tier and any user-provided `$ARGUMENTS` focus:
+Read the skill template file at `skills/claude-md/operations/templates.md` relative to the plugin directory. Use it to compose the `## Khanrad` section.
 
-**Minimal** (simple projects):
-- Session Start only (check assigned tasks)
+**Always include** the appropriate project context block:
+- If `.khanrad.json` exists → Workspace Context block
+- If no `.khanrad.json` but slug discovery succeeded → Slug Discovery block
+- If neither → include a comment noting that no board was found
 
-**Standard** (medium projects):
-- Session Start
-- Task Lifecycle (claim, update, move)
-- Progress Reporting
+**Optionally include** the Issue Management block if:
+- The project actively creates issues from Claude sessions
+- The user requests it via `$ARGUMENTS` (e.g., "with issue creation")
+- The project has existing issues that suggest active tracking
 
-**Full** (complex projects):
-- Session Start
-- Task Lifecycle
-- Progress Reporting
-- Board Awareness
-- Multi-agent Coordination
-
-If `$ARGUMENTS` specifies a focus area, adjust selection:
-- "minimal" / "simple" → force Minimal tier
-- "full" / "everything" → force Full tier
-- "agent-workflow" → include Task Lifecycle and Multi-agent Coordination
-
-Tell the user which patterns were selected and why.
-
-## Phase 4: Propose Snippet
-
-Read the skill template file at `skills/claude-md/operations/templates.md` relative to the plugin directory. Use it to compose the appropriate snippet for the selected patterns.
-
-Compose the `## Khanrad` section using the selected pattern templates.
-
-If `.khanrad.json` exists, use the Workspace Context template block instead of hardcoding project/board IDs. This makes the generated instructions portable across environments.
-
-If no `.khanrad.json` exists but a Khanrad board was found via slug discovery in Phase 2, include the project and board IDs in the generated instructions so Claude can immediately start working with the board. Also remind the user they can create `.khanrad.json` to avoid hardcoded IDs.
+**Do NOT include** instructions that duplicate the MCP server's standard workflow (claim, move, comment, unclaim, check assigned tasks, board summary).
 
 Present the exact content in a fenced code block and explain:
 - Where it will be inserted (new CLAUDE.md, or appended/updated in existing one)
-- Which patterns are included and what they do
+- What's included and why
 
 Ask the user for confirmation before applying. Use AskUserQuestion with options:
 - "Apply as shown"
-- "Adjust patterns" (go back to Phase 3)
+- "Add issue management" / "Remove issue management" (toggle the optional block)
 - "Edit manually" (write to CLAUDE.md and let user edit)
 
-## Phase 5: Apply
+## Phase 4: Apply
 
 Based on confirmation:
 
