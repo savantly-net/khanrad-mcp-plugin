@@ -30,9 +30,3 @@ General engineering standards:
 At session start, call `ask` with "What do I know about khanrad-mcp-plugin?" to load prior context before doing any work.
 When you learn something significant about khanrad-mcp-plugin (skill design, template patterns, plugin configuration), call `remember` with source: "khanrad-mcp-plugin" and relevant tags.
 When you make a decision or choose an approach, call `believe` with the decision, confidence 0.7-0.9, and subject: "khanrad-mcp-plugin".
-
-## Khanrad
-
-At session start, if `.khanrad.json` exists in the project root, read it to get the project
-slug and default board slug. Resolve slugs to IDs via `list-projects` and `list-boards`.
-Use these IDs for all subsequent Khanrad operations in this session.
