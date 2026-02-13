@@ -28,6 +28,7 @@ Restart Claude Code to activate the plugin.
 - **Workspace context** — commit a `.khanrad.json` file to map your repo to a Khanrad project and board by slug
 - **Zero-config discovery** — automatically matches your project name against Khanrad project slugs when no config file exists
 - **Greenfield brainstorm** — `/khanrad:brainstorm` decomposes an application idea into domains, generates stories with parallel subagents, and populates a Khanrad board with tagged, prioritized issues
+- **Brownfield feature planning** — `/khanrad:plan-feature` explores your codebase, performs impact analysis, generates code-aware stories with risk tagging, and populates a Khanrad board with implementation-ready issues
 
 ## Configuration
 
