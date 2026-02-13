@@ -11,6 +11,18 @@ Before resolving the project name, check for a `.khanrad.json` file in the proje
 
 These slugs are resolved to IDs at runtime via `list-projects` and `list-boards`, so the generated CLAUDE.md never needs hardcoded IDs when this file is present.
 
+## Slug-Based Discovery Fallback
+
+When no `.khanrad.json` exists, the plugin can auto-discover a matching Khanrad project by comparing the resolved project name against project slugs:
+
+1. Resolve the project name using the Project Name Resolution table below
+2. Normalize the name to slug format: lowercase, replace spaces/underscores with hyphens, strip non-alphanumeric characters (e.g., `My App` → `my-app`, `@org/my_project` → `my-project`)
+3. Call `list-projects` and look for an exact slug match
+4. If matched, use that project. Call `list-boards` and use the first board as the default.
+5. If no match, proceed without board context
+
+When slug discovery succeeds during `/khanrad:claude-md`, offer to create `.khanrad.json` to make the mapping permanent.
+
 ## Project Name Resolution
 
 Resolve in priority order — stop at the first match:

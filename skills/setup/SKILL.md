@@ -76,7 +76,7 @@ A `.khanrad.json` file in the project root maps the workspace to a Khanrad proje
 | `project` | string | Yes | Slug of the Khanrad project |
 | `defaultBoard` | string | No | Slug of the default board |
 
-This file is safe to commit — it contains only slugs, no secrets. At session start, Claude reads this file and resolves slugs to IDs via `list-projects` and `list-boards`. The `/khanrad:setup` command offers to create this file after environment variable configuration.
+This file is safe to commit — it contains only slugs, no secrets. At session start, Claude reads this file and resolves slugs to IDs via `list-projects` and `list-boards`. When no `.khanrad.json` exists, the plugin falls back to slug-based auto-discovery by matching the project name against Khanrad project slugs. The `/khanrad:setup` command offers to create this file after environment variable configuration.
 
 ### Git Safety
 

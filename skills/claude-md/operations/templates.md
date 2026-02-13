@@ -12,6 +12,14 @@ slug and default board slug. Resolve slugs to IDs via `list-projects` and `list-
 Use these IDs for all subsequent Khanrad operations in this session.
 ```
 
+### Slug Discovery (prepend when no `.khanrad.json` but auto-discovery is desired)
+
+```
+At session start, resolve the project name to a slug (lowercase, hyphenated). Call `list-projects`
+and match against project slugs. If a match is found, call `list-boards` and use the first board
+for all Khanrad operations in this session.
+```
+
 ### Session Start (always included)
 
 ```
@@ -56,7 +64,8 @@ When creating issues for other agents, set appropriate priority and labels so th
 2. **Keep total lines between 2-12.** More than that and instructions compete with each other for attention.
 3. **Each line must be a behavioral trigger.** Format: "When {condition}, call `{tool}` with {key context}."
 4. **Don't duplicate what MCP provides.** Tool schemas, parameter types, and defaults come from MCP — only specify *when* to use tools and which params matter.
-5. **Prefer `.khanrad.json` over hardcoded IDs.** If `.khanrad.json` exists, use the Workspace Context block instead of embedding IDs. If no config file exists and a specific board was detected during setup, hardcode the IDs so Claude doesn't need to discover them each session.
+5. **Prefer `.khanrad.json` over hardcoded IDs.** If `.khanrad.json` exists, use the Workspace Context block instead of embedding IDs. If no config file exists but slug discovery found a match, offer to create `.khanrad.json` or use hardcoded IDs as a fallback.
+6. **Use Slug Discovery sparingly.** The Slug Discovery block adds a runtime `list-projects` call each session. Prefer `.khanrad.json` for committed projects; reserve Slug Discovery for projects that want zero-config onboarding.
 
 ## Anti-Patterns
 
@@ -68,7 +77,7 @@ When creating issues for other agents, set appropriate priority and labels so th
 
 ## Complete Tier Examples
 
-> **Note:** When `.khanrad.json` exists in the project root, prepend the Workspace Context block to any tier. This replaces hardcoded project/board IDs with slug-based resolution.
+> **Note:** When `.khanrad.json` exists, prepend the Workspace Context block to any tier. When no config file exists but auto-discovery is desired, prepend the Slug Discovery block instead. Both replace hardcoded project/board IDs with runtime resolution.
 
 ### Minimal (simple projects)
 

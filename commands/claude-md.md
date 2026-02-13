@@ -46,11 +46,13 @@ Call these tools to see if a Khanrad board already exists for this project:
    - If found, `list-boards` — find the board whose slug matches `defaultBoard` (if provided), otherwise note all boards
    - If the slug doesn't match any project or board, warn the user and fall back to name matching
 
-2. **Otherwise** — fall back to name matching:
-   - `list-projects` — check for an existing project matching the detected name
-   - If found, `list-boards` — check for an active board
+2. **Otherwise** — try slug-based auto-discovery:
+   - Normalize the detected project name to slug format: lowercase, replace spaces/underscores with hyphens, strip non-alphanumeric characters (e.g., `My App` → `my-app`)
+   - `list-projects` — find a project whose slug exactly matches the normalized name
+   - If matched, `list-boards` — use the first board as the default
+   - If no slug match, proceed without board context
 
-If a board exists, note the project ID and board ID for inclusion in the generated instructions. If no board exists, the generated instructions will include setup steps.
+If a board is found (via `.khanrad.json` or slug discovery), note the project ID and board ID. If slug discovery succeeded, **offer to create `.khanrad.json`** to persist the mapping — this avoids repeated discovery in future sessions. If no board exists, the generated instructions will include setup steps.
 
 ## Phase 3: Select Patterns
 
@@ -86,7 +88,7 @@ Compose the `## Khanrad` section using the selected pattern templates.
 
 If `.khanrad.json` exists, use the Workspace Context template block instead of hardcoding project/board IDs. This makes the generated instructions portable across environments.
 
-If no `.khanrad.json` exists but a Khanrad board was found in Phase 2, include the project and board IDs in the generated instructions so Claude can immediately start working with the board.
+If no `.khanrad.json` exists but a Khanrad board was found via slug discovery in Phase 2, include the project and board IDs in the generated instructions so Claude can immediately start working with the board. Also remind the user they can create `.khanrad.json` to avoid hardcoded IDs.
 
 Present the exact content in a fenced code block and explain:
 - Where it will be inserted (new CLAUDE.md, or appended/updated in existing one)

@@ -40,13 +40,13 @@ This skill helps users generate and manage CLAUDE.md instructions that teach Cla
 | Board Summary | `khanrad://board/{boardId}/summary` | Get overview of issue counts per state |
 | Agent Tasks | `khanrad://agent/tasks` | Check all issues assigned to you |
 
-## Workspace Context Resolution
+## Project Discovery
 
-When `.khanrad.json` exists in the project root, the generated CLAUDE.md uses slug-based resolution instead of hardcoded IDs:
+The plugin resolves project/board context in priority order:
 
-1. At session start, read `.khanrad.json` to get the `project` slug and optional `defaultBoard` slug
-2. Resolve slugs to IDs via `list-projects` and `list-boards`
-3. Use the resolved IDs for all subsequent Khanrad operations
+1. **`.khanrad.json`** — read committed config, resolve slugs to IDs via `list-projects` and `list-boards`
+2. **Slug discovery** — normalize the project name to a slug, match against Khanrad project slugs via `list-projects`, use the first board. When this succeeds, offer to create `.khanrad.json` to persist the mapping.
+3. **No match** — proceed without board context; user can create a project manually
 
 This makes the CLAUDE.md portable — it works for any contributor without knowing specific IDs.
 
