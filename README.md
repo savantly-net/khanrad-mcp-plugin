@@ -29,6 +29,7 @@ Restart Claude Code to activate the plugin.
 - **Zero-config discovery** — automatically matches your project name against Khanrad project slugs when no config file exists
 - **Greenfield brainstorm** — `/khanrad:brainstorm` decomposes an application idea into domains, generates stories with parallel subagents, and populates a Khanrad board with tagged, prioritized issues
 - **Brownfield feature planning** — `/khanrad:plan-feature` explores your codebase, performs impact analysis, generates code-aware stories with risk tagging, and populates a Khanrad board with implementation-ready issues
+- **Autonomous execution** — `/khanrad:work` picks up issues from your board and implements them one by one — with dry-run, supervised, or fully autonomous modes
 
 ## Configuration
 
