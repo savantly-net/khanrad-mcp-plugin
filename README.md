@@ -27,7 +27,6 @@ Restart Claude Code to activate the plugin.
 - **Board resources** — get board summaries and agent task lists via MCP resources
 - **Workspace context** — commit a `.khanrad.json` file to map your repo to a Khanrad project and board by slug
 - **Zero-config discovery** — automatically matches your project name against Khanrad project slugs when no config file exists
-- **CLAUDE.md generation** — run `/khanrad:claude-md` to auto-generate task management instructions tailored to your project
 
 ## Configuration
 
@@ -94,7 +93,7 @@ When this file is present, Claude resolves slugs to IDs at session start via `li
 
 ### Zero-Config Discovery
 
-When no `.khanrad.json` exists, the plugin can auto-discover a matching project by normalizing your project name (from `package.json`, directory name, etc.) to a slug and matching it against Khanrad project slugs. If a match is found, it uses that project's first board automatically. When this succeeds during `/khanrad:claude-md`, you'll be offered to create `.khanrad.json` to make the mapping permanent.
+When no `.khanrad.json` exists, the plugin can auto-discover a matching project by normalizing your project name (from `package.json`, directory name, etc.) to a slug and matching it against Khanrad project slugs. If a match is found, it uses that project's first board automatically.
 
 ## Tools
 
