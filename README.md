@@ -31,6 +31,7 @@ claude plugin marketplace update khanrad
 - **Project management** — create and list projects and boards
 - **Issue tracking** — create, update, move, and get issues with full state management
 - **Agent workflows** — claim and unclaim issues for agent-driven task execution
+- **Dependency tracking** — block and unblock issues to model prerequisites and sequencing
 - **Comments** — add comments to issues for progress tracking
 - **Board resources** — get board summaries and agent task lists via MCP resources
 - **Workspace context** — commit a `.khanrad.json` file to map your repo to a Khanrad project and board by slug
@@ -121,6 +122,8 @@ When no `.khanrad.json` exists, the plugin can auto-discover a matching project 
 | `move-issue` | Move an issue to a different state |
 | `claim-issue` | Claim an issue (assign to current agent) |
 | `unclaim-issue` | Unclaim an issue (remove assignee) |
+| `block-issue` | Create a blocking relationship between two issues |
+| `unblock-issue` | Remove a blocking relationship between two issues |
 | `add-comment` | Add a comment to an issue |
 
 ## Resources
